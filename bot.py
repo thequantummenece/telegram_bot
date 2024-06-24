@@ -1,8 +1,9 @@
 from flask import Flask
-import os
 import telebot
 import requests
 import json
+import threading
+import os
 
 app = Flask(__name__)
 
@@ -196,5 +197,10 @@ def recepie(message):
 def index():
     return "The bot is running!"
 
-if __name__ == '__main__':
+def start_bot():
     bot.polling(none_stop=True)
+
+if __name__ == '__main__':
+    bot_thread = threading.Thread(target=start_bot)
+    bot_thread.start()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
